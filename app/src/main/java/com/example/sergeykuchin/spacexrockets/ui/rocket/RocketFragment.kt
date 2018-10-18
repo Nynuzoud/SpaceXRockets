@@ -1,4 +1,4 @@
-package com.example.sergeykuchin.spacexrockets.ui.rockets
+package com.example.sergeykuchin.spacexrockets.ui.rocket
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,19 +11,19 @@ import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
 import com.example.sergeykuchin.spacexrockets.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
-class RocketsFragment : Fragment() {
+class RocketFragment : Fragment() {
 
     companion object {
-        fun newInstance() = RocketsFragment()
+        fun newInstance() = RocketFragment()
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: RocketsViewModel
+    private lateinit var viewModel: RocketViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.rockets_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.rocket_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,8 +31,6 @@ class RocketsFragment : Fragment() {
 
         ComponentsHolder.applicationComponent.inject(this)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RocketsViewModel::class.java)
-
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RocketViewModel::class.java)
     }
-
 }

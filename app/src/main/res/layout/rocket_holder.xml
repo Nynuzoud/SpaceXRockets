@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="88dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="88dp">
 
     <ImageView
         android:id="@+id/image"
@@ -18,34 +18,24 @@
 
     <TextView
         android:id="@+id/name"
-        android:includeFontPadding="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewHolderHeader"
         android:layout_marginStart="20dp"
-        android:textColor="@color/secondaryTextColor"
-        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="@+id/image"
         tools:text="Falcon 6" />
 
     <TextView
         android:id="@+id/country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewHolderRegular"
         android:layout_marginStart="20dp"
-        android:textColor="@color/secondaryGreyTextColor"
-        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/name"
         tools:text="USA" />
 
     <TextView
         android:id="@+id/engines_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewHolderRegular"
         android:layout_marginStart="20dp"
-        android:textColor="@color/secondaryGreyTextColor"
-        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/country"
         tools:text="Number of engines: 3" />
@@ -57,7 +47,7 @@
         android:background="@drawable/background_color_primary_rounded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/image"
-        tools:srcCompat="@drawable/ic_check_white_24dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:srcCompat="@drawable/ic_check_white_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
