@@ -7,6 +7,7 @@ import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketFragment
 import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketViewModel
 import com.example.sergeykuchin.spacexrockets.ui.rockets.RocketsFragment
 import com.example.sergeykuchin.spacexrockets.ui.rockets.RocketsViewModel
+import com.squareup.picasso.Picasso
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,6 +17,7 @@ interface AppComponent {
 
     val application: Application
     val api: Api
+    val picasso: Picasso
 
     fun inject(rocketsFragment: RocketsFragment)
     fun inject(rocketsViewModel: RocketsViewModel)

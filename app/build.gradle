@@ -32,6 +32,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -70,6 +74,15 @@ dependencies {
 
     //Hello Charts
     implementation "com.github.lecho:hellocharts-library:1.5.8@aar"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    //Picasso
+    api 'com.squareup.picasso:picasso:2.71828'
+    api 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'

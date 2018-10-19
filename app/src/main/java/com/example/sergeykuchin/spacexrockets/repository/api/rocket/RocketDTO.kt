@@ -2,6 +2,7 @@ package com.example.sergeykuchin.spacexrockets.repository.api.rocket
 
 data class RocketDTO(
 
+    val id: Long? = null,
     val rocket_id: String,
     val rocket_name: String = "",
     val country: String = "",

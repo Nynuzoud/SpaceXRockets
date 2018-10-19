@@ -7,6 +7,7 @@ data class LaunchDTO (
     val flight_number: Int,
     val rocket: RocketDTO? = null,
     val mission_name: String = "",
-    val launch_date_utc: String = "",
-    val launch_success: Boolean? = null
+    val launch_date_local: String = "",
+    val launch_success: Boolean? = null,
+    val links: LinksDTO
 )

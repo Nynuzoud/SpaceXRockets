@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="88dp">
+<layout>
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="100dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+    <data>
 
-    <TextView
-        android:id="@+id/name"
-        style="@style/TextViewHolderHeader"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toTopOf="@+id/image"
-        tools:text="Falcon 6" />
+        <variable
+            name="rocket"
+            type="com.example.sergeykuchin.spacexrockets.ui.vo.Rocket"/>
 
-    <TextView
-        android:id="@+id/country"
-        style="@style/TextViewHolderRegular"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="USA" />
+    </data>
 
-    <TextView
-        android:id="@+id/engines_count"
-        style="@style/TextViewHolderRegular"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toBottomOf="@+id/country"
-        tools:text="Number of engines: 3" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="88dp">
 
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/background_color_primary_rounded"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/image"
-        tools:ignore="ContentDescription"
-        tools:srcCompat="@drawable/ic_check_white_24dp" />
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:imageUrl="@{rocket.imageUrl}"
+            tools:ignore="ContentDescription" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextViewHolderHeader"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="@+id/image"
+            tools:text="Falcon 6"
+            android:text="@{rocket.rocketName}"/>
+
+        <TextView
+            android:id="@+id/country"
+            style="@style/TextViewHolderRegular"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:text="USA"
+            android:text="@{rocket.country}"/>
+
+        <TextView
+            android:id="@+id/engines_count"
+            style="@style/TextViewHolderRegular"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/country"
+            tools:text="Number of engines: 3"
+            android:text="@{String.format(@string/engines_count, rocket.enginesNumber)}"/>
+
+        <ImageView
+            android:id="@+id/is_active"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_color_primary_rounded"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image"
+            tools:ignore="ContentDescription"
+            tools:srcCompat="@drawable/ic_check_white_24dp"
+            app:loadingImage="@{@drawable/ic_check_white_24dp}"
+            app:loadImageIf="@{rocket.active}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
