@@ -1,10 +1,13 @@
 package com.example.sergeykuchin.spacexrockets.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class BaseViewModel : ViewModel() {
+
+    val errorsLiveData = MutableLiveData<Int>()
 
     private val subscriptions = CompositeDisposable()
 

@@ -13,7 +13,8 @@ class RocketMapper : Function<RocketDTO, Rocket> {
             country = t.country,
             enginesNumber = t.engines?.number ?: 0,
             active = t.active,
-            imageUrl = t.flickr_images[0]
+            imageUrl = t.flickr_images[0],
+            description = t.description
         )
     }
 }

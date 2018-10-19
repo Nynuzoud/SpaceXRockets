@@ -21,6 +21,8 @@
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            app:imageTargetWidth="@{100}"
+            app:imageTargetHeight="@{56}"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"

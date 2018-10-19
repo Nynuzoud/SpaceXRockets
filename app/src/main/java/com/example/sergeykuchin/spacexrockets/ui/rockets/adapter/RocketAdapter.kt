@@ -11,7 +11,7 @@ class RocketAdapter : RecyclerView.Adapter<RocketViewHolder>() {
 
     private val differ = AsyncListDiffer(this, RocketDiffUtilCallback())
 
-    var data: MutableList<Rocket>
+    var data: List<Rocket>
         get() = differ.currentList
         set(value) {
             differ.submitList(value)

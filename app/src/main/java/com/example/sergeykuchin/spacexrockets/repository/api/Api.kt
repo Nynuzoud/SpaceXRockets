@@ -8,8 +8,8 @@ import retrofit2.http.GET
 interface Api {
 
     @GET("rockets")
-    fun getAllRockets(): Single<MutableList<RocketDTO>>
+    fun getAllRockets(): Single<List<RocketDTO>>
 
     @GET("launches")
-    fun getAllLaunches(): Single<MutableList<LaunchDTO>>
+    fun getAllLaunches(): Single<List<LaunchDTO>>
 }

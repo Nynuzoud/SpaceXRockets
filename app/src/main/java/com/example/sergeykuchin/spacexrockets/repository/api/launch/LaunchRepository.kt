@@ -5,5 +5,5 @@ import io.reactivex.Flowable
 
 interface LaunchRepository {
 
-    fun getAllLaunches(rocketId: String): Flowable<MutableList<Launch>>
+    fun getAllLaunches(rocketId: String): Flowable<List<Launch>>
 }

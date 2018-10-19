@@ -7,14 +7,14 @@ import com.squareup.picasso.Picasso
 
 class ImageBindingAdapter(private val picasso: Picasso) {
 
-    @BindingAdapter("bind:imageUrl")
-    fun loadImage(view: ImageView?, url: String?) {
+    @BindingAdapter("bind:imageUrl", "bind:imageTargetWidth", "bind:imageTargetHeight")
+    fun loadImage(view: ImageView?, url: String?, targetWidth: Int, targetHeight: Int) {
 
         picasso.cancelRequest(view ?: return)
 
         picasso
             .load(url)
-            .resize(100, 56)
+            .resize(targetWidth, targetHeight)
             .centerCrop()
             .into(view)
     }

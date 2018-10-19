@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.sergeykuchin.spacexrockets.R
 import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
 import com.example.sergeykuchin.spacexrockets.other.kotlinextensions.showSnackbar
+import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketFragment
 import com.example.sergeykuchin.spacexrockets.ui.rockets.adapter.RocketAdapter
 import com.example.sergeykuchin.spacexrockets.ui.rockets.adapter.RocketAdapterListener
 import com.example.sergeykuchin.spacexrockets.viewmodel.ViewModelFactory
@@ -29,7 +30,7 @@ class RocketsFragment : Fragment() {
 
     private lateinit var viewModel: RocketsViewModel
 
-    private val rocketAdapter = RocketAdapter()
+    lateinit var rocketAdapter: RocketAdapter
     private val rocketAdapterListener = RocketAdapterListenerImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -43,6 +44,11 @@ class RocketsFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RocketsViewModel::class.java)
 
+        //there are two ways of implementing toolbar
+        // 1. Implement and change MainActivity's actionBar
+        // 2. Create custom toolbar for every fragment
+        //I chose the second way because we have two different fragments with different toolbars,
+        //so it will be rather to use separated toolbars
         toolbar.setTitle(R.string.app_name)
         toolbar.inflateMenu(R.menu.menu_rockets)
         toolbar.menu.findItem(R.id.action_active).isChecked = viewModel.activeOnly
@@ -57,6 +63,7 @@ class RocketsFragment : Fragment() {
             return@setOnMenuItemClickListener false
         }
 
+        rocketAdapter = RocketAdapter()
         rocketAdapter.listener = rocketAdapterListener
         rocketAdapter.setHasStableIds(true)
         rockets_recycler.adapter = rocketAdapter
@@ -85,7 +92,11 @@ class RocketsFragment : Fragment() {
     private inner class RocketAdapterListenerImpl : RocketAdapterListener {
 
         override fun onItemClick(rocketId: String) {
-
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.container, RocketFragment.newInstance(rocketId))
+                ?.addToBackStack(RocketFragment::class.java.simpleName)
+                ?.commitAllowingStateLoss()
         }
     }
 }

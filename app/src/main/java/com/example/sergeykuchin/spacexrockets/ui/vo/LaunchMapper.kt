@@ -13,6 +13,7 @@ class LaunchMapper(private val dateFormatter: DateFormatter) : Function<LaunchDT
             rocketId = t.rocket?.rocket_id ?: return null,
             missionName = t.mission_name,
             dateString = dateFormatter.formatFromServerFormatToUserFormat(t.launch_date_local),
+            year = dateFormatter.formatFromServerFormatToYearOnly(t.launch_date_local),
             isSuccessful = when(t.launch_success) {
                 true -> LaunchStates.SUCCESS.text
                 false -> LaunchStates.UNSUCCESS.text

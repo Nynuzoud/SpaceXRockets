@@ -9,5 +9,5 @@ import io.reactivex.Single
 abstract class LaunchDAO : CommonDAO<Launch>() {
 
     @Query("SELECT * FROM launch WHERE rocketId=:rocketId")
-    abstract fun getAllLaunchesByRocketId(rocketId: String): Single<MutableList<Launch>>
+    abstract fun getAllLaunchesByRocketId(rocketId: String): Single<List<Launch>>
 }

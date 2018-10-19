@@ -11,8 +11,9 @@ data class Launch(
     val rocketId: String,
     val missionName: String = "",
     val dateString: String = "",
+    val year: String = "",
     val isSuccessful: String = "",
-    val patchSmallUrl: String = ""
+    val patchSmallUrl: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -24,6 +25,7 @@ data class Launch(
         if (rocketId != other.rocketId) return false
         if (missionName != other.missionName) return false
         if (dateString != other.dateString) return false
+        if (year != other.year) return false
         if (isSuccessful != other.isSuccessful) return false
         if (patchSmallUrl != other.patchSmallUrl) return false
 
@@ -35,8 +37,9 @@ data class Launch(
         result = 31 * result + rocketId.hashCode()
         result = 31 * result + missionName.hashCode()
         result = 31 * result + dateString.hashCode()
+        result = 31 * result + year.hashCode()
         result = 31 * result + isSuccessful.hashCode()
-        result = 31 * result + patchSmallUrl.hashCode()
+        result = 31 * result + (patchSmallUrl?.hashCode() ?: 0)
         return result
     }
 }

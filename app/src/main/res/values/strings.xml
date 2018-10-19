@@ -6,6 +6,9 @@
     <!-- Rockets -->
     <string name="engines_count">Number of engines: %1$d</string>
 
+    <!-- Rocket -->
+    <string name="launches_per_year">Launches per year</string>
+
     <!-- Menus -->
     <string name="menu_active">Active only</string>
 

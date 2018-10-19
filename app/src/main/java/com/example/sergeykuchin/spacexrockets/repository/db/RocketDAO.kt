@@ -12,11 +12,11 @@ import io.reactivex.Single
 abstract class RocketDAO : CommonDAO<Rocket>() {
 
     @Query("SELECT * FROM rocket ORDER BY id ASC")
-    abstract fun getAllRockets(): Single<MutableList<Rocket>>
+    abstract fun getAllRockets(): Single<List<Rocket>>
 
     @Query("SELECT * FROM rocket WHERE rocketId=:rocketId ORDER BY id ASC")
     abstract fun getRocket(rocketId: String): Single<Rocket>
 
     @Query("SELECT * FROM rocket WHERE active=1 ORDER BY id ASC")
-    abstract fun getActiveRockets(): Single<MutableList<Rocket>>
+    abstract fun getActiveRockets(): Single<List<Rocket>>
 }

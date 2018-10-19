@@ -8,5 +8,6 @@ data class RocketDTO(
     val country: String = "",
     val engines: EnginesDTO? = null,
     val active: Boolean = false,
-    val flickr_images: MutableList<String> = ArrayList()
+    val flickr_images: List<String> = ArrayList(),
+    val description: String = ""
 )

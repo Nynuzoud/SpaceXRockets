@@ -72,8 +72,8 @@ dependencies {
     //Timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    //Hello Charts
-    implementation "com.github.lecho:hellocharts-library:1.5.8@aar"
+    //Android Charts
+    implementation "im.dacer:AndroidCharts:1.0.4"
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"

@@ -83,6 +83,7 @@ class LaunchRepositoryTest {
                 rocketId = "falcon1",
                 missionName = "FalconSat",
                 dateString = "25.03.2006 03:30",
+                year = "2006",
                 isSuccessful = LaunchStates.UNSUCCESS.text,
                 patchSmallUrl = "testImageHere"
             )
@@ -94,6 +95,7 @@ class LaunchRepositoryTest {
                 rocketId = "falcon9",
                 missionName = "ABS-3A / Eutelsat 115W B",
                 dateString = "03.03.2015 08:50",
+                year = "2015",
                 isSuccessful = LaunchStates.SUCCESS.text,
                 patchSmallUrl = "testImageHere2"
             )
@@ -110,7 +112,7 @@ class LaunchRepositoryTest {
         launchRepository
             .getAllLaunchesFromApi()
             .subscribe({
-                result = it
+                result = it.toMutableList()
             }, {
                 error = it
             })
@@ -131,7 +133,7 @@ class LaunchRepositoryTest {
         launchRepository
             .getAllLaunchesFromApi()
             .subscribe({
-                result = it
+                result = it.toMutableList()
             }, {
                 error = it
             })

@@ -22,7 +22,7 @@ class RocketRepositoryImpl(
     /**
      * Loading data from DB first and then from API
      */
-    override fun getAllRockets(activeOnly: Boolean): Flowable<MutableList<Rocket>> {
+    override fun getAllRockets(activeOnly: Boolean): Flowable<List<Rocket>> {
         return Single.concat(
             getRocketsFromDb(activeOnly),
             getAllRocketsFromApi(activeOnly)
@@ -36,7 +36,7 @@ class RocketRepositoryImpl(
      * If list is empty provides [EmptyListException]
      */
     @VisibleForTesting
-    fun getAllRocketsFromApi(activeOnly: Boolean): Single<MutableList<Rocket>> {
+    fun getAllRocketsFromApi(activeOnly: Boolean): Single<List<Rocket>> {
         return api
             .getAllRockets()
             .map(RocketsMapper())
@@ -45,7 +45,7 @@ class RocketRepositoryImpl(
                     if (!activeOnly) {
                         Single.just(rockets)
                     } else {
-                        Single.just(rockets.asSequence().filter { it.active }.toMutableList())
+                        Single.just(rockets.filter { it.active })
                     }
                 } else Single.error(EmptyListException("List is empty"))
             }
@@ -54,11 +54,23 @@ class RocketRepositoryImpl(
             }
     }
 
-    private fun getRocketsFromDb(activeOnly: Boolean): Single<MutableList<Rocket>> {
+    private fun getRocketsFromDb(activeOnly: Boolean): Single<List<Rocket>> {
         return if (activeOnly) {
             rocketDAO.getActiveRockets()
         } else {
             rocketDAO.getAllRockets()
         }
+    }
+
+    /**
+     * We do not need to update rocket's data so often,
+     * so that's why we're getting data from DB only
+     */
+    override fun getRocket(rocketId: String): Single<Rocket> {
+
+        return rocketDAO
+            .getRocket(rocketId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

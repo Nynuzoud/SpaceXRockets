@@ -21,26 +21,33 @@ class LaunchRepositoryImpl(
 ) : LaunchRepository {
 
     /**
-     * Getting all launches from server, mapping into [Launch] and saving to DB
-     * If list is empty provides [EmptyListException]
+     * Loading data from DB first and then from API
+     * @return filtered launches for rocket by [rocketId]
      */
-    override fun getAllLaunches(rocketId: String): Flowable<MutableList<Launch>> {
+    override fun getAllLaunches(rocketId: String): Flowable<List<Launch>> {
         return Single.concat(
             getAllLaunchesForRocketFromDb(rocketId),
             getAllLaunchesFromApi()
+                .flatMap { launches ->
+                    launches.filter { it.rocketId == rocketId }.let { Single.just(it) }
+                }
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
     }
 
-    private fun getAllLaunchesForRocketFromDb(rocketId: String): Single<MutableList<Launch>> {
+    private fun getAllLaunchesForRocketFromDb(rocketId: String): Single<List<Launch>> {
         return launchDAO
             .getAllLaunchesByRocketId(rocketId)
     }
 
+    /**
+     * Getting all launches from server, mapping into [Launch] and saving to DB
+     * If list is empty provides [EmptyListException]
+     */
     @VisibleForTesting
-    fun getAllLaunchesFromApi(): Single<MutableList<Launch>> {
+    fun getAllLaunchesFromApi(): Single<List<Launch>> {
         return api
             .getAllLaunches()
             .map(LaunchesMapper(DateFormatter()))
