@@ -24,7 +24,7 @@
             android:id="@+id/rockets_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/rocket_holder"
+            tools:listitem="@layout/holder_rocket"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

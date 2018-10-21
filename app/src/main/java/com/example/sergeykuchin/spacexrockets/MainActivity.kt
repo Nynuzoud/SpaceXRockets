@@ -11,16 +11,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, RocketsFragment.newInstance())
-                .commitNow()
-        }
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            super.onBackPressed()
-        } else {
-            supportFragmentManager.popBackStackImmediate()
+                .add(R.id.container, RocketsFragment.newInstance())
+                .commit()
         }
     }
 }

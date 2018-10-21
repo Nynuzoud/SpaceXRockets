@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="launch"
+            type="com.example.sergeykuchin.spacexrockets.ui.vo.Launch"/>
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,6 +22,7 @@
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/whiteColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,6 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:imageTargetWidth="@{100}"
+            app:imageTargetHeight="@{100}"
+            app:imageUrl="@{launch.patchSmallUrl}"
             tools:ignore="ContentDescription"
             tools:srcCompat="@drawable/ic_image_black_24dp" />
 
@@ -34,12 +46,14 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView"
+        android:text="@{launch.missionName}"
         tools:text="TESS" />
 
     <TextView
         android:id="@+id/mission_date"
         style="@style/TextViewHolderRegular"
         android:layout_marginStart="16dp"
+        android:text="@{launch.dateString}"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/mission_name"
         tools:text="18.04.2018 22:51" />
@@ -48,8 +62,10 @@
         android:id="@+id/mission_success"
         style="@style/TextViewHolderRegular"
         android:layout_marginStart="16dp"
+        android:text="@{launch.isSuccessful}"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/mission_date"
         tools:text="Success" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

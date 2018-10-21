@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.Fade
 import com.example.sergeykuchin.spacexrockets.R
 import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
 import com.example.sergeykuchin.spacexrockets.other.kotlinextensions.showSnackbar
@@ -87,16 +90,18 @@ class RocketsFragment : Fragment() {
             }
             loading.visibility = View.GONE
         })
+
+        exitTransition = Fade()
     }
 
     private inner class RocketAdapterListenerImpl : RocketAdapterListener {
-
-        override fun onItemClick(rocketId: String) {
-            activity?.supportFragmentManager
+        override fun onItemClick(rocketId: String, image: ImageView) {
+            fragmentManager
                 ?.beginTransaction()
-                ?.replace(R.id.container, RocketFragment.newInstance(rocketId))
+                ?.addSharedElement(image, ViewCompat.getTransitionName(image) ?: rocketId)
                 ?.addToBackStack(RocketFragment::class.java.simpleName)
-                ?.commitAllowingStateLoss()
+                ?.replace(R.id.container, RocketFragment.newInstance(rocketId), RocketFragment::class.java.simpleName)
+                ?.commit()
         }
     }
 }

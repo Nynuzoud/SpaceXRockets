@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sergeykuchin.spacexrockets.databinding.RocketHolderBinding
+import com.example.sergeykuchin.spacexrockets.databinding.HolderRocketBinding
 import com.example.sergeykuchin.spacexrockets.ui.vo.Rocket
 
 class RocketAdapter : RecyclerView.Adapter<RocketViewHolder>() {
@@ -20,7 +20,7 @@ class RocketAdapter : RecyclerView.Adapter<RocketViewHolder>() {
     var listener: RocketAdapterListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketViewHolder {
-        val binding = RocketHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = HolderRocketBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RocketViewHolder(binding, listener)
     }
 
