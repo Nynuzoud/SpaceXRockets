@@ -14,17 +14,15 @@ import androidx.transition.TransitionInflater
 import com.example.sergeykuchin.spacexrockets.R
 import com.example.sergeykuchin.spacexrockets.databinding.RocketFragmentBinding
 import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
-import com.example.sergeykuchin.spacexrockets.ui.rocket.adapter.LaunchAdapterItemType
 import com.example.sergeykuchin.spacexrockets.ui.rocket.adapter.LaunchAdapterWrapper
 import com.example.sergeykuchin.spacexrockets.ui.rocket.adapter.LaunchHeaderItemDecoration
 import com.example.sergeykuchin.spacexrockets.ui.rocket.adapter.LaunchesAdapter
-import com.example.sergeykuchin.spacexrockets.ui.vo.Launch
+import com.example.sergeykuchin.spacexrockets.ui.vo.Rocket
 import com.example.sergeykuchin.spacexrockets.viewmodel.ViewModelFactory
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.rocket_fragment.*
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -54,6 +52,8 @@ class RocketFragment : Fragment() {
 
     private lateinit var viewModel: RocketViewModel
     private lateinit var binding: RocketFragmentBinding
+
+    private lateinit var adapter: LaunchesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,12 +85,21 @@ class RocketFragment : Fragment() {
             activity?.supportFragmentManager?.popBackStackImmediate()
         }
 
-        setupMainImage()
+        setupRecycler()
 
-        viewModel.launchLiveData.observe(this, Observer {
-            setupLaunchChart(it)
-            setupLaunchHistory(it)
+        viewModel.rocketLiveData.observe(this, Observer {
+            binding.rocket = it
+            setupMainImage(it)
         })
+
+        viewModel.launchAdapterWrapperLiveData.observe(this, Observer {
+            adapter.data = it as ArrayList<LaunchAdapterWrapper>
+        })
+
+//        viewModel.launchLiveData.observe(this, Observer {
+//            setupLaunchChart(it)
+//            setupLaunchHistory(it)
+//        })
 
         val rocketId = arguments?.getString(ROCKET_ID)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -99,77 +108,77 @@ class RocketFragment : Fragment() {
         viewModel.rocketId = rocketId
     }
 
-    private fun setupMainImage() {
-        viewModel.rocketLiveData.observe(this, Observer {
-            binding.rocket = it
-            picasso
-                .load(it.imageUrl)
-                .fit()
-                .noFade()
-                .centerCrop()
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(main_image, object : Callback {
-                    override fun onSuccess() {
-                        startPostponedEnterTransition()
-                    }
-
-                    override fun onError(e: Exception?) {
-                        startPostponedEnterTransition()
-                    }
-                })
-        })
-    }
-
-    private fun setupLaunchChart(launches: Map<String, List<Launch>>) {
-        if (launches.isEmpty()) {
-            launches_per_year_title.visibility = View.GONE
-            launch_chart.visibility = View.GONE
-            return
-        }
-
-        val bottomYearsList = ArrayList<String>()
-        val dataList = ArrayList<Int>()
-        launches.entries
-            .forEach {
-                try {
-                    bottomYearsList.add(it.key)
-                    dataList.add(it.value.size)
-                } catch (e: NumberFormatException) {
-                    Timber.d(e)
+    private fun setupMainImage(rocket: Rocket) {
+        picasso
+            .load(rocket.imageUrl)
+            .fit()
+            .noFade()
+            .centerCrop()
+            .networkPolicy(NetworkPolicy.OFFLINE)
+            .into(main_image, object : Callback {
+                override fun onSuccess() {
+                    startPostponedEnterTransition()
                 }
-            }
-        launch_chart.setBottomTextList(bottomYearsList)
-        launch_chart.setDrawDotLine(true)
-        launch_chart.showPopup = true
-        launch_chart.setColorArray(intArrayOf(ContextCompat.getColor(context!!, R.color.primaryColor)))
-        launch_chart.setDataList(arrayListOf(dataList))
+
+                override fun onError(e: Exception?) {
+                    startPostponedEnterTransition()
+                }
+            })
     }
 
-    private fun setupLaunchHistory(launches: Map<String, List<Launch>>) {
-        val launchesList = ArrayList<LaunchAdapterWrapper>()
-
-        var id = 0L
-        launches.entries
-            .forEach { launchesByYear ->
-                val launchAdapterWrapperHeader = LaunchAdapterWrapper(
-                    id = ++id,
-                    year = launchesByYear.key,
-                    itemType = LaunchAdapterItemType.HEADER
-                )
-                launchesList.add(launchAdapterWrapperHeader)
-                launchesList.addAll(launchesByYear.value.map {
-                    return@map LaunchAdapterWrapper(
-                        id = ++id,
-                        launch = it,
-                        year = it.year,
-                        itemType = LaunchAdapterItemType.LAUNCH
-                    )
-                })
-            }
-        val launchesAdapter = LaunchesAdapter()
-        launchesAdapter.setHasStableIds(true)
-        launches_recycler.adapter = launchesAdapter
-        launches_recycler.addItemDecoration(LaunchHeaderItemDecoration(launchesAdapter))
-        launchesAdapter.data = launchesList
+    private fun setupRecycler() {
+        adapter = LaunchesAdapter()
+        adapter.setHasStableIds(true)
+        launches_recycler.adapter = adapter
+        launches_recycler.addItemDecoration(LaunchHeaderItemDecoration(adapter))
     }
+
+//    private fun setupLaunchChart(launches: Map<String, List<Launch>>) {
+//        if (launches.isEmpty()) {
+//            launches_per_year_title.visibility = View.GONE
+//            launch_chart.visibility = View.GONE
+//            return
+//        }
+//
+//        val bottomYearsList = ArrayList<String>()
+//        val dataList = ArrayList<Int>()
+//        launches.entries
+//            .forEach {
+//                try {
+//                    bottomYearsList.add(it.key)
+//                    dataList.add(it.value.size)
+//                } catch (e: NumberFormatException) {
+//                    Timber.d(e)
+//                }
+//            }
+//        launch_chart.setBottomTextList(bottomYearsList)
+//        launch_chart.setDrawDotLine(true)
+//        launch_chart.showPopup = true
+//        launch_chart.setColorArray(intArrayOf(ContextCompat.getColor(context!!, R.color.primaryColor)))
+//        launch_chart.setDataList(arrayListOf(dataList))
+//    }
+//
+//    private fun setupLaunchHistory(launches: Map<String, List<Launch>>) {
+//        val launchesList = ArrayList<LaunchAdapterWrapper>()
+//
+//        var id = 0L
+//        launches.entries
+//            .forEach { launchesByYear ->
+//                val launchAdapterWrapperHeader = LaunchAdapterWrapper(
+//                    id = ++id,
+//                    year = launchesByYear.key,
+//                    itemType = LaunchAdapterItemType.HEADER
+//                )
+//                launchesList.add(launchAdapterWrapperHeader)
+//                launchesList.addAll(launchesByYear.value.map {
+//                    return@map LaunchAdapterWrapper(
+//                        id = ++id,
+//                        launch = it,
+//                        year = it.year,
+//                        itemType = LaunchAdapterItemType.LAUNCH
+//                    )
+//                })
+//            }
+//        launchesAdapter.data = launchesList
+//    }
 }

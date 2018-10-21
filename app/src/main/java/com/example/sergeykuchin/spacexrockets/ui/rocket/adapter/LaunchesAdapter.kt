@@ -20,6 +20,20 @@ class LaunchesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), LaunchH
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            LaunchAdapterItemType.LAUNCH_CHART.ordinal -> {
+                LaunchChartViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.holder_launch_chart, parent, false)
+                )
+            }
+            LaunchAdapterItemType.DESCRIPTION.ordinal -> {
+                LaunchDescriptionViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.holder_launch_description, parent, false)
+                )
+            }
             LaunchAdapterItemType.HEADER.ordinal -> {
                 LaunchHeaderViewHolder(
                     LayoutInflater
@@ -43,6 +57,8 @@ class LaunchesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), LaunchH
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
+            LaunchAdapterItemType.LAUNCH_CHART.ordinal -> (holder as LaunchChartViewHolder).bind(data[position].launchChartItem)
+            LaunchAdapterItemType.DESCRIPTION.ordinal -> (holder as LaunchDescriptionViewHolder).bind(data[position].description)
             LaunchAdapterItemType.HEADER.ordinal -> (holder as LaunchHeaderViewHolder).bind(data[position].year)
             LaunchAdapterItemType.LAUNCH.ordinal -> (holder as LaunchViewHolder).bind(data[position].launch)
         }
@@ -56,7 +72,7 @@ class LaunchesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), LaunchH
 
     override fun getHeaderPositionForItem(itemPosition: Int): Int =
         (itemPosition downTo 0)
-            .firstOrNull { _data[it].itemType == LaunchAdapterItemType.HEADER } ?: 0
+            .firstOrNull { _data[it].itemType == LaunchAdapterItemType.HEADER } ?: LaunchHeaderItemDecoration.NO_HEADER_FOUND
 
     override fun getHeaderLayout(headerPosition: Int): Int = R.layout.holder_launch_header
 

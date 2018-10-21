@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : RecyclerView.ItemDecoration() {
 
+    companion object {
+        const val NO_HEADER_FOUND = -1
+    }
+
     private var stickyHeaderHeight: Int = 0
 
     private val lruViewsCache: LruCache<Int, View> = LruCache(DEFAULT_BUFFER_SIZE)
@@ -39,8 +43,12 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
     }
 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View {
-        val headerPosition = listener.getHeaderPositionForItem(itemPosition)
-        val layoutResId = listener.getHeaderLayout(headerPosition)
+        var headerPosition = listener.getHeaderPositionForItem(itemPosition)
+        val layoutResId = if (headerPosition == NO_HEADER_FOUND) {
+            //TODO
+            headerPosition = 0
+            listener.getHeaderLayout(0)
+        } else listener.getHeaderLayout(headerPosition)
 
         val cachedView = lruViewsCache.get(layoutResId)
         val header = if (cachedView == null) {
