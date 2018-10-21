@@ -85,6 +85,21 @@ class RocketFragment : Fragment() {
             activity?.supportFragmentManager?.popBackStackImmediate()
         }
 
+        setupMainImage()
+
+        viewModel.launchLiveData.observe(this, Observer {
+            setupLaunchChart(it)
+            setupLaunchHistory(it)
+        })
+
+        val rocketId = arguments?.getString(ROCKET_ID)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            main_image.transitionName = rocketId
+        }
+        viewModel.rocketId = rocketId
+    }
+
+    private fun setupMainImage() {
         viewModel.rocketLiveData.observe(this, Observer {
             binding.rocket = it
             picasso
@@ -103,17 +118,6 @@ class RocketFragment : Fragment() {
                     }
                 })
         })
-
-        viewModel.launchLiveData.observe(this, Observer {
-            setupLaunchChart(it)
-            setupLaunchHistory(it)
-        })
-
-        val rocketId = arguments?.getString(ROCKET_ID)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            main_image.transitionName = rocketId
-        }
-        viewModel.rocketId = rocketId
     }
 
     private fun setupLaunchChart(launches: Map<String, List<Launch>>) {
