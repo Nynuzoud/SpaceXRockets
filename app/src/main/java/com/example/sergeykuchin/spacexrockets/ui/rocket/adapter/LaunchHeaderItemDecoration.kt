@@ -1,6 +1,7 @@
 package com.example.sergeykuchin.spacexrockets.ui.rocket.adapter
 
 import android.graphics.Canvas
+import android.util.LruCache
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,15 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
 
     private var stickyHeaderHeight: Int = 0
 
+    private val lruViewsCache: LruCache<Int, View> = LruCache(DEFAULT_BUFFER_SIZE)
+
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
 
         val topChild = parent.getChildAt(0) ?: return
 
         val topChildPosition = parent.getChildAdapterPosition(topChild)
-        //val topChildPosition = (parent.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
         if (topChildPosition == RecyclerView.NO_POSITION) {
             return
         }
@@ -38,7 +41,14 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View {
         val headerPosition = listener.getHeaderPositionForItem(itemPosition)
         val layoutResId = listener.getHeaderLayout(headerPosition)
-        val header = LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
+
+        val cachedView = lruViewsCache.get(layoutResId)
+        val header = if (cachedView == null) {
+            val newView = LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
+            lruViewsCache.put(layoutResId, newView)
+            newView
+        } else cachedView
+
         listener.bindHeaderData(header, headerPosition)
         return header
     }

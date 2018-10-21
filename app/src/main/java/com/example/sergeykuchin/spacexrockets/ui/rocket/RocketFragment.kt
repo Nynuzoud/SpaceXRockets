@@ -167,7 +167,7 @@ class RocketFragment : Fragment() {
                 })
             }
         val launchesAdapter = LaunchesAdapter()
-        launchesAdapter.setHasStableIds(false)
+        launchesAdapter.setHasStableIds(true)
         launches_recycler.adapter = launchesAdapter
         launches_recycler.addItemDecoration(LaunchHeaderItemDecoration(launchesAdapter))
         launchesAdapter.data = launchesList

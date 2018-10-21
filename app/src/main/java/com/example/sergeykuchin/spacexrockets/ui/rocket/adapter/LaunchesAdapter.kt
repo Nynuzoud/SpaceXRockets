@@ -50,7 +50,7 @@ class LaunchesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), LaunchH
 
     override fun getItemCount(): Int = _data.size
 
-    //override fun getItemId(position: Int): Long = _data[position].id
+    override fun getItemId(position: Int): Long = _data[position].id
 
     override fun getItemViewType(position: Int): Int = _data[position].itemType.ordinal
 
