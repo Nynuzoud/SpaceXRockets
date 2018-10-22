@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sergeykuchin.spacexrockets.R
 
 
 class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : RecyclerView.ItemDecoration() {
@@ -25,9 +26,7 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
 
         val topChildPosition = parent.getChildAdapterPosition(topChild)
 
-        if (topChildPosition == RecyclerView.NO_POSITION) {
-            return
-        }
+        if (topChildPosition == RecyclerView.NO_POSITION) return
 
         val currentHeader = getHeaderViewForItem(topChildPosition, parent)
         fixLayoutSize(parent, currentHeader)
@@ -43,11 +42,9 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
     }
 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View {
-        var headerPosition = listener.getHeaderPositionForItem(itemPosition)
+        val headerPosition = listener.getHeaderPositionForItem(itemPosition)
         val layoutResId = if (headerPosition == NO_HEADER_FOUND) {
-            //TODO
-            headerPosition = 0
-            listener.getHeaderLayout(0)
+            R.layout.layout_launch_header_empty
         } else listener.getHeaderLayout(headerPosition)
 
         val cachedView = lruViewsCache.get(layoutResId)
@@ -57,7 +54,7 @@ class LaunchHeaderItemDecoration(private var listener: LaunchHeaderInterface) : 
             newView
         } else cachedView
 
-        listener.bindHeaderData(header, headerPosition)
+        if (headerPosition != NO_HEADER_FOUND) listener.bindHeaderData(header, headerPosition)
         return header
     }
 

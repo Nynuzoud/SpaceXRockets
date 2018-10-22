@@ -7,7 +7,7 @@ import com.example.sergeykuchin.spacexrockets.repository.api.rocket.RocketDTO
 import com.example.sergeykuchin.spacexrockets.repository.api.rocket.RocketRepositoryImpl
 import com.example.sergeykuchin.spacexrockets.repository.db.RocketDAO
 import com.example.sergeykuchin.spacexrockets.ui.vo.Rocket
-import io.reactivex.Single
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
@@ -102,7 +102,7 @@ class RocketRepositoryTest {
 
     @Test
     fun checkRocketRepositoryFinishesSuccessfully() {
-        `when`(api.getAllRockets()).thenReturn(Single.just(rocketDTOList))
+        `when`(api.getAllRockets()).thenReturn(Flowable.just(rocketDTOList))
 
         var result: MutableList<Rocket>? = null
         var error: Throwable? = null
@@ -125,7 +125,7 @@ class RocketRepositoryTest {
 
     @Test
     fun checkRocketRepositoryFinishesWithError() {
-        `when`(api.getAllRockets()).thenReturn(Single.just(rocketDTOEmptyList))
+        `when`(api.getAllRockets()).thenReturn(Flowable.just(rocketDTOEmptyList))
 
         var result: MutableList<Rocket>? = null
         var error: Throwable? = null

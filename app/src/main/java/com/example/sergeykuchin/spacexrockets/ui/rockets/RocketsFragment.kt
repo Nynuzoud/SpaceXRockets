@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Fade
 import com.example.sergeykuchin.spacexrockets.R
 import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
+import com.example.sergeykuchin.spacexrockets.other.errorhandler.ErrorViewImpl
 import com.example.sergeykuchin.spacexrockets.other.kotlinextensions.showSnackbar
 import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketFragment
 import com.example.sergeykuchin.spacexrockets.ui.rockets.adapter.RocketAdapter
@@ -33,7 +34,9 @@ class RocketsFragment : Fragment() {
 
     private lateinit var viewModel: RocketsViewModel
 
-    lateinit var rocketAdapter: RocketAdapter
+    private var errorView = ErrorViewImpl()
+
+    private lateinit var rocketAdapter: RocketAdapter
     private val rocketAdapterListener = RocketAdapterListenerImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -82,13 +85,18 @@ class RocketsFragment : Fragment() {
             rocketAdapter.data = it
             loading.visibility = View.GONE
             swipe_refresh.isRefreshing = false
+            errorView.removeAllSnackbarErrors()
         })
 
         viewModel.errorsLiveData.observe(this, Observer {
-            root.showSnackbar(it, R.string.retry, Snackbar.LENGTH_INDEFINITE) {
+            errorView.addSnackBarError(root.showSnackbar(it!!, R.string.retry, Snackbar.LENGTH_INDEFINITE) {
                 viewModel.getRockets()
-            }
+                if (rockets_recycler.adapter?.itemCount == 0) {
+                    loading.visibility = View.VISIBLE
+                }
+            })
             loading.visibility = View.GONE
+            swipe_refresh.isRefreshing = false
         })
 
         exitTransition = Fade()

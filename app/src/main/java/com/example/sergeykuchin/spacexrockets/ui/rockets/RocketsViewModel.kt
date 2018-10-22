@@ -33,7 +33,7 @@ class RocketsViewModel @Inject constructor(applicationComponent: AppComponent,
         subscribe(rocketRepository
             .getAllRockets(_activeOnly)
             .subscribe({
-                rocketsLiveData.value = it
+                if (it.isNotEmpty()) rocketsLiveData.value = it
             }, {
                 simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
             }))

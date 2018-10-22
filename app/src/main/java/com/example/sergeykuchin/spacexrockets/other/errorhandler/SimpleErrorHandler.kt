@@ -1,8 +1,8 @@
 package com.example.sergeykuchin.spacexrockets.other.errorhandler
 
-import androidx.lifecycle.MutableLiveData
+import com.example.sergeykuchin.spacexrockets.other.livedata.SingleLiveData
 
 interface SimpleErrorHandler {
 
-    fun handleCommonErrors(throwable: Throwable, errorsLiveData: MutableLiveData<Int>)
+    fun handleCommonErrors(throwable: Throwable, errorsLiveData: SingleLiveData<Int>)
 }

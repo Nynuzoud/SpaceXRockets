@@ -4,7 +4,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 
-fun View.showSnackbar(@StringRes message: Int, @StringRes buttonText: Int, length: Int, function: () -> Unit) {
+fun View.showSnackbar(@StringRes message: Int, @StringRes buttonText: Int, length: Int, function: () -> Unit): Snackbar {
     val snackbar = Snackbar
         .make(this, message, length)
 
@@ -14,4 +14,6 @@ fun View.showSnackbar(@StringRes message: Int, @StringRes buttonText: Int, lengt
             snackbar.dismiss()
         }
         .show()
+
+    return snackbar
 }
