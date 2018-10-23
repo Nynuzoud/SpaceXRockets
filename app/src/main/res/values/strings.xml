@@ -3,6 +3,9 @@
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, eam cu cibo natum, cibo alterum ne mea. Cu viderer patrioque duo, cum in mnesarchum efficiantur, ad aperiri placerat voluptatibus his. Ne nam doctus vivendum. Te mel malis soleat dignissim, nam nulla equidem consequat te, ne per sale quas illum. Bonorum recteque hendrerit ius id, eam semper copiosae delicatissimi te, eu pericula suscipiantur conclusionemque vis. An per ipsum aliquip.</string>
 
+    <!-- Greeting Dialog -->
+    <string name="greeting_dialog_message">Hello! It is a SpaceXRockets application.</string>
+
     <!-- Rockets -->
     <string name="engines_count">Number of engines: %1$d</string>
 

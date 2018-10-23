@@ -14,6 +14,8 @@ import com.example.sergeykuchin.spacexrockets.R
 import com.example.sergeykuchin.spacexrockets.di.ComponentsHolder
 import com.example.sergeykuchin.spacexrockets.other.errorhandler.ErrorViewImpl
 import com.example.sergeykuchin.spacexrockets.other.kotlinextensions.showSnackbar
+import com.example.sergeykuchin.spacexrockets.other.preferences.Preferences
+import com.example.sergeykuchin.spacexrockets.ui.greetingdialog.GreetingDialog
 import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketFragment
 import com.example.sergeykuchin.spacexrockets.ui.rockets.adapter.RocketAdapter
 import com.example.sergeykuchin.spacexrockets.ui.rockets.adapter.RocketAdapterListener
@@ -31,6 +33,9 @@ class RocketsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var preferences: Preferences
 
     private lateinit var viewModel: RocketsViewModel
 
@@ -98,6 +103,11 @@ class RocketsFragment : Fragment() {
             loading.visibility = View.GONE
             swipe_refresh.isRefreshing = false
         })
+
+        if (preferences.getFirstLaunch()) {
+            GreetingDialog().show(fragmentManager, GreetingDialog::class.java.simpleName)
+            preferences.setFirstLaunch(false)
+        }
 
         exitTransition = Fade()
     }

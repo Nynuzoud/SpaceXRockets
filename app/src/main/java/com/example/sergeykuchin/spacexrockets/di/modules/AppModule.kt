@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.sergeykuchin.spacexrockets.BuildConfig
 import com.example.sergeykuchin.spacexrockets.other.errorhandler.SimpleErrorHandler
 import com.example.sergeykuchin.spacexrockets.other.errorhandler.SimpleErrorHandlerImpl
+import com.example.sergeykuchin.spacexrockets.other.preferences.Preferences
+import com.example.sergeykuchin.spacexrockets.other.preferences.PreferencesImpl
 import com.example.sergeykuchin.spacexrockets.repository.api.Api
 import com.example.sergeykuchin.spacexrockets.repository.api.launch.LaunchRepository
 import com.example.sergeykuchin.spacexrockets.repository.api.launch.LaunchRepositoryImpl
@@ -56,6 +58,10 @@ class AppModule(private val application: Application) {
     @Singleton
     @Provides
     fun provideSimpleErrorHandler(): SimpleErrorHandler = SimpleErrorHandlerImpl()
+
+    @Singleton
+    @Provides
+    fun providePreferences(app: Application): Preferences = PreferencesImpl(app)
 
     ///////////////////API//////////////////////
 

@@ -1,8 +1,6 @@
 package com.example.sergeykuchin.spacexrockets.di.components
 
-import android.app.Application
 import com.example.sergeykuchin.spacexrockets.di.modules.AppModule
-import com.example.sergeykuchin.spacexrockets.repository.api.Api
 import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketFragment
 import com.example.sergeykuchin.spacexrockets.ui.rocket.RocketViewModel
 import com.example.sergeykuchin.spacexrockets.ui.rockets.RocketsFragment
@@ -15,8 +13,6 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    val application: Application
-    val api: Api
     val picasso: Picasso
 
     fun inject(rocketsFragment: RocketsFragment)
