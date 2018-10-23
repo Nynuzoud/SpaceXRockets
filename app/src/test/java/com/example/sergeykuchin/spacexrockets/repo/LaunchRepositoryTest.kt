@@ -9,7 +9,7 @@ import com.example.sergeykuchin.spacexrockets.repository.api.launch.LinksDTO
 import com.example.sergeykuchin.spacexrockets.repository.api.rocket.RocketDTO
 import com.example.sergeykuchin.spacexrockets.repository.db.LaunchDAO
 import com.example.sergeykuchin.spacexrockets.ui.vo.Launch
-import io.reactivex.Flowable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Rule
@@ -104,7 +104,7 @@ class LaunchRepositoryTest {
 
     @Test
     fun checkRocketRepositoryFinishesSuccessfully() {
-        Mockito.`when`(api.getAllLaunches()).thenReturn(Flowable.just(launchDTOList))
+        Mockito.`when`(api.getAllLaunches()).thenReturn(Single.just(launchDTOList))
 
         var result: MutableList<Launch>? = null
         var error: Throwable? = null
@@ -125,7 +125,7 @@ class LaunchRepositoryTest {
 
     @Test
     fun checkRocketRepositoryFinishesWithError() {
-        Mockito.`when`(api.getAllLaunches()).thenReturn(Flowable.just(launchDTOEmptyList))
+        Mockito.`when`(api.getAllLaunches()).thenReturn(Single.just(launchDTOEmptyList))
 
         var result: MutableList<Launch>? = null
         var error: Throwable? = null
