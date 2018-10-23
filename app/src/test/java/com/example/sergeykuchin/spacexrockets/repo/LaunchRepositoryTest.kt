@@ -44,6 +44,8 @@ class LaunchRepositoryTest {
     @InjectMocks
     lateinit var launchRepository: LaunchRepositoryImpl
 
+    private val rocketId = "falcon1"
+
     @Before
     fun init() {
 
@@ -51,7 +53,7 @@ class LaunchRepositoryTest {
             LaunchDTO(
                 flight_number = 1,
                 rocket = RocketDTO(
-                    rocket_id = "falcon1"
+                    rocket_id = rocketId
                 ),
                 mission_name = "FalconSat",
                 launch_date_local = "2006-03-25T10:30:00+12:00",
@@ -66,7 +68,7 @@ class LaunchRepositoryTest {
             LaunchDTO(
                 flight_number = 21,
                 rocket = RocketDTO(
-                    rocket_id = "falcon9"
+                    rocket_id = rocketId
                 ),
                 mission_name = "ABS-3A / Eutelsat 115W B",
                 launch_date_local = "2015-03-02T23:50:00-04:00",
@@ -80,7 +82,7 @@ class LaunchRepositoryTest {
         launchList.add(
             Launch(
                 flightNumber = 1,
-                rocketId = "falcon1",
+                rocketId = rocketId,
                 missionName = "FalconSat",
                 dateString = "25.03.2006 03:30",
                 year = "2006",
@@ -92,7 +94,7 @@ class LaunchRepositoryTest {
         launchList.add(
             Launch(
                 flightNumber = 21,
-                rocketId = "falcon9",
+                rocketId = rocketId,
                 missionName = "ABS-3A / Eutelsat 115W B",
                 dateString = "03.03.2015 08:50",
                 year = "2015",
@@ -110,9 +112,10 @@ class LaunchRepositoryTest {
         var error: Throwable? = null
 
         launchRepository
-            .getAllLaunchesFromApi()
+            .getAllLaunchesFromApi(rocketId)
             .subscribe({
-                result = it.toMutableList()
+                result = it.data?.toMutableList()
+                error = it.error
             }, {
                 error = it
             })
@@ -131,9 +134,10 @@ class LaunchRepositoryTest {
         var error: Throwable? = null
 
         launchRepository
-            .getAllLaunchesFromApi()
+            .getAllLaunchesFromApi(rocketId)
             .subscribe({
-                result = it.toMutableList()
+                result = it.data?.toMutableList()
+                error = it.error
             }, {
                 error = it
             })

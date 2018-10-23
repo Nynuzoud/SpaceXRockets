@@ -1,11 +1,13 @@
 package com.example.sergeykuchin.spacexrockets.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.sergeykuchin.spacexrockets.other.errorhandler.SimpleErrorHandler
 import com.example.sergeykuchin.spacexrockets.other.livedata.SingleLiveData
+import com.example.sergeykuchin.spacexrockets.repository.api.DataWrapper
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(protected val simpleErrorHandler: SimpleErrorHandler) : ViewModel() {
 
     val errorsLiveData = SingleLiveData<Int>()
 
@@ -25,5 +27,13 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun clearSubscriptions() {
         subscriptions.clear()
+    }
+
+    protected fun hasErrors(dataWrapper: DataWrapper<out Any?>): Boolean {
+        if (dataWrapper.error != null) {
+            simpleErrorHandler.handleCommonErrors(dataWrapper.error, errorsLiveData)
+            return true
+        }
+        return false
     }
 }

@@ -20,8 +20,8 @@ class RocketViewModel @Inject constructor(
     applicationComponent: AppComponent,
     private val rocketRepository: RocketRepository,
     private val launchRepository: LaunchRepository,
-    private val simpleErrorHandler: SimpleErrorHandler
-) : BaseViewModel() {
+    simpleErrorHandler: SimpleErrorHandler
+) : BaseViewModel(simpleErrorHandler) {
 
     private var _rocketId: String? = null
     var rocketId: String?
@@ -55,30 +55,36 @@ class RocketViewModel @Inject constructor(
     private fun getRocket(rocketId: String?) {
         if (rocketId == null) return
 
-        subscribe(rocketRepository
-            .getRocket(rocketId)
-            .subscribe({
-                if (it != null) rocketLiveData.value = it
-            }, {
-                simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
-            })
+        subscribe(
+            rocketRepository
+                .getRocket(rocketId)
+                .subscribe({
+                    if (!hasErrors(it)) {
+                        if (it != null) rocketLiveData.value = it.data
+                    }
+                }, {
+                    simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
+                })
         )
     }
 
     private fun getLaunch(rocketId: String?) {
         if (rocketId == null) return
 
-        subscribe(launchRepository
-            .getAllLaunches(rocketId)
-            .subscribe({ launches ->
-                if (launches.isNotEmpty()) {
-                    launches
-                        .groupBy { it.year }
-                        .let { launchLiveData.value = it }
-                }
-            }, {
-                simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
-            })
+        subscribe(
+            launchRepository
+                .getAllLaunches(rocketId)
+                .subscribe({ launches ->
+                    if (!hasErrors(launches)) {
+                        if (launches.data?.isNotEmpty() == true) {
+                            launches.data
+                                .groupBy { it.year }
+                                .let { launchLiveData.value = it }
+                        }
+                    }
+                }, {
+                    simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
+                })
         )
     }
 

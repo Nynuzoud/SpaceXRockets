@@ -81,8 +81,11 @@ class RocketsFragment : Fragment() {
 
         loading.visibility = View.VISIBLE
 
+        viewModel.getRockets()
+
         swipe_refresh.setOnRefreshListener {
             swipe_refresh.isRefreshing = true
+            errorView.removeAllSnackbarErrors()
             viewModel.getRockets()
         }
 
@@ -90,7 +93,6 @@ class RocketsFragment : Fragment() {
             rocketAdapter.data = it
             loading.visibility = View.GONE
             swipe_refresh.isRefreshing = false
-            errorView.removeAllSnackbarErrors()
         })
 
         viewModel.errorsLiveData.observe(this, Observer {
@@ -99,6 +101,7 @@ class RocketsFragment : Fragment() {
                 if (rockets_recycler.adapter?.itemCount == 0) {
                     loading.visibility = View.VISIBLE
                 }
+                errorView.removeAllSnackbarErrors()
             })
             loading.visibility = View.GONE
             swipe_refresh.isRefreshing = false
@@ -110,6 +113,13 @@ class RocketsFragment : Fragment() {
         }
 
         exitTransition = Fade()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        errorView.removeAllSnackbarErrors()
+        viewModel.rocketsLiveData.removeObservers(this)
+        viewModel.errorsLiveData.removeObservers(this)
     }
 
     private inner class RocketAdapterListenerImpl : RocketAdapterListener {

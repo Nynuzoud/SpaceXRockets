@@ -97,18 +97,17 @@ class RocketFragment : Fragment() {
         viewModel.rocketLiveData.observe(this, Observer {
             binding.rocket = it
             setupMainImage(it)
-            errorView.removeAllSnackbarErrors()
         })
 
         viewModel.launchAdapterWrapperLiveData.observe(this, Observer {
             adapter.data = it as ArrayList<LaunchAdapterWrapper>
             loading.visibility = View.GONE
-            errorView.removeAllSnackbarErrors()
         })
 
         viewModel.errorsLiveData.observe(this, Observer {
             errorView.addSnackBarError(root.showSnackbar(it!!, R.string.retry, Snackbar.LENGTH_INDEFINITE) {
                 viewModel.updateData()
+                errorView.removeAllSnackbarErrors()
             })
             loading.visibility = View.GONE
         })
@@ -143,5 +142,13 @@ class RocketFragment : Fragment() {
         adapter.setHasStableIds(true)
         launches_recycler.adapter = adapter
         launches_recycler.addItemDecoration(LaunchHeaderItemDecoration(adapter))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        errorView.removeAllSnackbarErrors()
+        viewModel.rocketLiveData.removeObservers(this)
+        viewModel.launchAdapterWrapperLiveData.removeObservers(this)
+        viewModel.errorsLiveData.removeObservers(this)
     }
 }

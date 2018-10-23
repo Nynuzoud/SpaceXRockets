@@ -112,7 +112,8 @@ class RocketRepositoryTest {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                result = it.toMutableList()
+                result = it.data?.toMutableList()
+                error = it.error
             }, {
                 error = it
             })
@@ -135,7 +136,8 @@ class RocketRepositoryTest {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                result = it.toMutableList()
+                result = it.data?.toMutableList()
+                error = it.error
             }, {
                 error = it
             })

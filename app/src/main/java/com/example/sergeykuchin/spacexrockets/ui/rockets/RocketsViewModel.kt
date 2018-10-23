@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class RocketsViewModel @Inject constructor(applicationComponent: AppComponent,
                                            private val rocketRepository: RocketRepository,
-                                           private val simpleErrorHandler: SimpleErrorHandler) : BaseViewModel() {
+                                           simpleErrorHandler: SimpleErrorHandler) : BaseViewModel(simpleErrorHandler) {
 
     val rocketsLiveData = MutableLiveData<List<Rocket>>()
 
@@ -24,8 +24,6 @@ class RocketsViewModel @Inject constructor(applicationComponent: AppComponent,
 
     init {
         applicationComponent.inject(this)
-
-        getRockets()
     }
 
     fun getRockets() {
@@ -33,7 +31,9 @@ class RocketsViewModel @Inject constructor(applicationComponent: AppComponent,
         subscribe(rocketRepository
             .getAllRockets(_activeOnly)
             .subscribe({
-                if (it.isNotEmpty()) rocketsLiveData.value = it
+                if (!hasErrors(it)) {
+                    if (it.data?.isNotEmpty() == true) rocketsLiveData.value = it.data
+                }
             }, {
                 simpleErrorHandler.handleCommonErrors(it, errorsLiveData)
             }))
